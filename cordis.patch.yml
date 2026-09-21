@@ -1,0 +1,18 @@
+# ============================================================================
+# dsh-phone —— DSH bundle patch
+# ============================================================================
+# 安装：
+#   dsh plugin --profile web add link:/path/to/dsh-phone
+#   （也可以先发布到 npm，然后 add dsh-phone）
+# 卸载：
+#   dsh plugin --profile web remove dsh-phone
+#
+# 注意：本插件只负责「手机上怎么拿到登录网址」。
+# 让服务监听局域网这件事不在插件里，而在 profile 自己的
+# cordis.patch.yml 中把 webserver 的 host 改成 0.0.0.0
+# （`dsh web` 命令行刻意不允许 --host 0.0.0.0）。
+# ============================================================================
+
+- insert:
+    - id: dsh-phone
+      name: dsh-phone

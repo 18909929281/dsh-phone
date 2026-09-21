@@ -1,0 +1,18 @@
+# 依赖 —— 别人 clone 下来跑 `npm install` 就有了
+node_modules/
+
+# 锁文件：这个包是个插件（不是应用），锁文件没必要进仓库
+package-lock.json
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 日志和临时文件
+*.log
+npm-debug.log*
+_*.txt
+_*.zip

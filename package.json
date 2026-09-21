@@ -1,0 +1,48 @@
+{
+  "name": "dsh-phone",
+  "version": "0.1.0",
+  "description": "DSH Web GUI 手机接入：在本机生成登录二维码，手机扫码即可从局域网使用 DSH",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "phone",
+    "mobile",
+    "lan",
+    "qr",
+    "qrcode",
+    "web"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node check-phone.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "license": "MIT",
+  "author": "<你的署名>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/<你的用户名>/dsh-phone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/<你的用户名>/dsh-phone/issues"
+  },
+  "homepage": "https://github.com/<你的用户名>/dsh-phone#readme"
+}
