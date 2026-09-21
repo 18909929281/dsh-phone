@@ -6,8 +6,6 @@
 
 ---
 
-> ### 小字儿
->
 > 本项目**由 AI 编写** —— **「小菜的 AI」**（跑在 DeepSeek Harness 上的 `deepseek-flash` 模型）。
 >
 > 需求、判断、验收都来自 **小菜的ds**；代码、文档、测试是 AI 写出来的。
@@ -46,23 +44,37 @@ http://192.168.1.100:3080/?token=<43 位随机串>
 
 **token 全程不出这台电脑。**
 
-## 安装
+## 一键加入
 
-### 一键安装（推荐）
+**把下面这一整行复制进终端，回车。** 就这一步。
 
 ```sh
-dsh plugin --profile web add link:/path/to/dsh-phone
-node /path/to/dsh-phone/install.mjs
+git clone https://github.com/18909929281/dsh-phone.git && node dsh-phone/install.mjs --install
 ```
 
-`install.mjs` 会帮你做最烦的那一步 —— **自动改好 profile 补丁**（下面那个 `host: 0.0.0.0`），
-原文件会先备份成 `cordis.patch.yml.bak`。改完它会把防火墙命令打出来给你。
+它按顺序做三件事：
 
-（发布到 npm 之后就可以直接 `npx dsh-phone-install`。）
+| 步骤 | 干什么 |
+|---|---|
+| `git clone` | 把仓库下载到当前目录下的 `dsh-phone/` |
+| `install.mjs --install` | **① 改好 profile 补丁**（那个 `host: 0.0.0.0`，原文件先备份成 `.bak`）<br>**② 把插件注册进 profile**（用绝对路径，不靠你拼）|
 
-### 手动安装
+跑完它会**把防火墙命令打出来** —— 那一步需要管理员权限，得你自己执行。
 
-如果不想跑脚本，就照[下面](#前置条件两步不能省)的两步自己来。
+然后重启 `dsh web`，打开 `http://127.0.0.1:3080/phone` 扫码就行。
+
+> **不想让它自动注册插件？** 去掉 `--install` 就只改配置：
+> `node dsh-phone/install.mjs`
+>
+> **想先看看它要干什么？** 加 `--dry-run`，只打印不执行。
+
+### 手动安装（不用脚本）
+
+```sh
+git clone https://github.com/18909929281/dsh-phone.git
+dsh plugin --profile web add link:$PWD/dsh-phone
+node dsh-phone/install.mjs      # 或者照下面「前置条件」自己改 YAML
+```
 
 ### 卸载
 
@@ -189,6 +201,17 @@ Loopback-only is deliberate: the page content is equivalent to a credential, so 
 
 ⚠️ **Security**: the prerequisite is binding `dsh web` to `0.0.0.0`, which exposes a command-capable interface to your whole network. Use it on a trusted home LAN only. The token is the only gate.
 
-Requires one profile patch (`~/.dsh/profiles/web/cordis.patch.yml`) and a firewall rule — see the Chinese section above for exact contents.
+## Install (one line)
+
+```sh
+git clone https://github.com/18909929281/dsh-phone.git && node dsh-phone/install.mjs --install
+```
+
+That clones the repo, patches the profile for you (backing the original up as `.bak`), and
+registers the plugin. It then prints the firewall command — that one needs admin, so you run it
+yourself.
+
+Requires one profile patch (`~/.dsh/profiles/web/cordis.patch.yml`) and a firewall rule.
+The installer does the patch; see the Chinese section above for what it writes and why.
 
 MIT licensed.

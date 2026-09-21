@@ -3,21 +3,33 @@
  * dsh-phone 一键安装
  * ==================
  *
- * 干一件事：把 profile 的补丁文件改好（那个 host: 0.0.0.0）。
- * 这一步是纯手改 YAML，最容易劝退人 —— 所以做成脚本。
+ * 干两件事：
+ *   1. 改好 profile 补丁（那个 host: 0.0.0.0）—— 纯手改 YAML 最容易劝退人的一步
+ *   2. 加 --install 时，顺手把插件本身也注册进 profile
  *
- *   node install.mjs
+ *   node install.mjs            只改配置
+ *   node install.mjs --install  改配置 + 注册插件（推荐）
+ *   node install.mjs --dry-run  只说要做什么，不真做
  *
- * 不会碰防火强（那需要管理员权限，得你自己执行，脚本会把命令打出来）。
+ * 不碰防火墙 —— 那需要管理员权限，得你自己执行，脚本会把命令打出来。
  */
 
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { homedir, platform } from 'node:os'
 import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { spawnSync } from 'node:child_process'
 
 const DSH_HOME = process.env.DSH_HOME || join(homedir(), '.dsh')
 const PROFILE_DIR = join(DSH_HOME, 'profiles', 'web')
 const PATCH_FILE = join(PROFILE_DIR, 'cordis.patch.yml')
+
+/** 本插件自己的目录（绝对路径）—— 注册插件时要把它告诉 dsh。 */
+const SELF_DIR = dirname(fileURLToPath(import.meta.url))
+
+const args = process.argv.slice(2)
+const WANT_LINK = args.includes('--install') // 顺手把插件也注册进 profile
+const DRY_RUN = args.includes('--dry-run')   // 只说要做什么，不真做
 
 const PATCH_BLOCK = `
 # ── 由 dsh-phone 的 install.mjs 写入 ──────────────────────────────
@@ -83,7 +95,33 @@ if (/^\s*-\s*id:\s*webserver\s*$/m.test(original)) {
   ok('已写入 webserver 的 host: 0.0.0.0')
 }
 
-// ── 4. 防火墙命令（需要管理员，脚本不代跑）────────────────────
+// ── 4. 注册插件（只在 --install 时做）─────────────────────────
+if (WANT_LINK) {
+  say()
+  const spec = `link:${SELF_DIR}`
+  say(`把插件注册进 profile：dsh plugin --profile web add ${spec}`)
+  if (DRY_RUN) {
+    warn('--dry-run：跳过，不真跑')
+  } else {
+    const r = spawnSync('dsh', ['plugin', '--profile', 'web', 'add', spec], {
+      stdio: 'inherit',
+      shell: true,
+      env: { ...process.env, DSH_HOME },
+    })
+    if (r.status === 0) {
+      ok('插件已注册进 profile')
+    } else {
+      warn('没自动装上（多半是 dsh 不在 PATH 里）。手动跑这一条就行：')
+      say()
+      say(`    dsh plugin --profile web add ${spec}`)
+    }
+  }
+} else {
+  say()
+  say(`（想连插件一起装，加个参数：node install.mjs --install）`)
+}
+
+// ── 5. 防火墙命令（需要管理员，脚本不代跑）────────────────────
 say()
 say('─'.repeat(58))
 say('还差一步：放行防火墙（需要管理员权限，脚本不代跑）')
