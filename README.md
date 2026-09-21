@@ -39,13 +39,30 @@ http://192.168.1.100:3080/?token=<43 位随机串>
 
 ## 安装
 
-```sh
-# 从本地目录装
-dsh plugin --profile web add link:/path/to/dsh-phone
+### 一键安装（推荐）
 
-# 卸载
+```sh
+dsh plugin --profile web add link:/path/to/dsh-phone
+node /path/to/dsh-phone/install.mjs
+```
+
+`install.mjs` 会帮你做最烦的那一步 —— **自动改好 profile 补丁**（下面那个 `host: 0.0.0.0`），
+原文件会先备份成 `cordis.patch.yml.bak`。改完它会把防火墙命令打出来给你。
+
+（发布到 npm 之后就可以直接 `npx dsh-phone-install`。）
+
+### 手动安装
+
+如果不想跑脚本，就照[下面](#前置条件两步不能省)的两步自己来。
+
+### 卸载
+
+```sh
 dsh plugin --profile web remove dsh-phone
 ```
+
+然后把 `~/.dsh/profiles/web/cordis.patch.yml` 里 `dsh-phone` 写入的那一段删掉
+（或者把 `host` 改回 `127.0.0.1`），就彻底关掉了。
 
 ## 用法
 
