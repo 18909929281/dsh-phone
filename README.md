@@ -49,7 +49,7 @@ http://192.168.1.100:3080/?token=<43 位随机串>
 **把下面这一整行复制进终端，回车。** 就这一步。
 
 ```sh
-git clone https://github.com/18909929281/dsh-phone.git && node dsh-phone/install.mjs --install
+git clone https://github.com/xiaocaiawa/dsh-phone.git && node dsh-phone/install.mjs --install
 ```
 
 它按顺序做三件事：
@@ -74,7 +74,7 @@ git clone https://github.com/18909929281/dsh-phone.git && node dsh-phone/install
 
 ```text
 帮我装一个 DSH 插件：dsh-phone
-仓库：https://github.com/18909929281/dsh-phone
+仓库：https://github.com/xiaocaiawa/dsh-phone
 
 它的作用：在本机开一个只有本机能访问的 /phone 页面，把 dsh web 的登录网址
 （带进程 token 的那串）画成二维码，手机扫码就能从局域网登录。
@@ -105,7 +105,7 @@ git clone https://github.com/18909929281/dsh-phone.git && node dsh-phone/install
 ### 手动安装（不用脚本）
 
 ```sh
-git clone https://github.com/18909929281/dsh-phone.git
+git clone https://github.com/xiaocaiawa/dsh-phone.git
 dsh plugin --profile web add link:$PWD/dsh-phone
 node dsh-phone/install.mjs      # 或者照下面「前置条件」自己改 YAML
 ```
@@ -238,7 +238,7 @@ Loopback-only is deliberate: the page content is equivalent to a credential, so 
 ## Install (one line)
 
 ```sh
-git clone https://github.com/18909929281/dsh-phone.git && node dsh-phone/install.mjs --install
+git clone https://github.com/xiaocaiawa/dsh-phone.git && node dsh-phone/install.mjs --install
 ```
 
 That clones the repo, patches the profile for you (backing the original up as `.bak`), and

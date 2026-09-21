@@ -46,10 +46,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/18909929281/dsh-phone.git"
+    "url": "git+https://github.com/xiaocaiawa/dsh-phone.git"
   },
   "bugs": {
-    "url": "https://github.com/18909929281/dsh-phone/issues"
+    "url": "https://github.com/xiaocaiawa/dsh-phone/issues"
   },
-  "homepage": "https://github.com/18909929281/dsh-phone#readme"
+  "homepage": "https://github.com/xiaocaiawa/dsh-phone#readme"
 }
