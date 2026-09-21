@@ -68,6 +68,40 @@ git clone https://github.com/18909929281/dsh-phone.git && node dsh-phone/install
 >
 > **想先看看它要干什么？** 加 `--dry-run`，只打印不执行。
 
+## AI 一键安装
+
+**把下面那一段整个复制，发给你自己的 AI。** 它会把上面那行命令替你跑完。
+
+```text
+帮我装一个 DSH 插件：dsh-phone
+仓库：https://github.com/18909929281/dsh-phone
+
+它的作用：在本机开一个只有本机能访问的 /phone 页面，把 dsh web 的登录网址
+（带进程 token 的那串）画成二维码，手机扫码就能从局域网登录。
+
+请按这个顺序做，每步做完把结果告诉我：
+
+1. 看 ~/.dsh/plugins/dsh-phone 在不在。
+   在 → git pull；不在 → git clone 上面那个仓库到那个位置。
+2. 进到那个目录，跑：node install.mjs --install
+   它会改 ~/.dsh/profiles/web/cordis.patch.yml（原文件备份成 .bak），
+   并把插件注册进 profile。
+3. 把它打印出来的防火墙命令，原文贴给我。
+4. 跑：node check-phone.mjs —— 把结果贴给我（应该是 26 项全过）。
+5. 告诉我下一步是不是需要重启 dsh web。
+
+注意：这个插件的前提是把 dsh web 绑到 0.0.0.0，那等于把这个能执行命令的
+界面暴露到整个局域网，token 是唯一的门槛。
+动第 2 步之前，先问我一句：我是不是在可信的家庭网络里。
+```
+
+### 为什么要写得这么细
+
+**AI 不是猜谜机。** 路径、命令、预期结果、以及「哪一步必须先问我」，都写清楚，
+它一次就能装对。含糊的指令它只能自己发挥 —— 然后你可能得到一堆意料之外的东西。
+
+这也是这个仓库的一个态度：**给 AI 看的说明，和给人看的说明，都该写明白。**
+
 ### 手动安装（不用脚本）
 
 ```sh
@@ -210,6 +244,15 @@ git clone https://github.com/18909929281/dsh-phone.git && node dsh-phone/install
 That clones the repo, patches the profile for you (backing the original up as `.bak`), and
 registers the plugin. It then prints the firewall command — that one needs admin, so you run it
 yourself.
+
+## AI one-click install
+
+There is a copy-paste prompt block in the Chinese section above ("AI 一键安装"). Hand it to your
+own DSH and it will run the install for you.
+
+It is written to be unambiguous on purpose — exact paths, exact commands, expected results, and an
+explicit **"ask me before step 2"** gate, because step 2 is what widens the exposure to your LAN.
+Vague instructions make an agent improvise; precise ones make it do the right thing once.
 
 Requires one profile patch (`~/.dsh/profiles/web/cordis.patch.yml`) and a firewall rule.
 The installer does the patch; see the Chinese section above for what it writes and why.
